@@ -1,27 +1,12 @@
-import darkLogo from "@/assets/logos/dark.svg";
-import logo from "@/assets/logos/main.svg";
-import Image from "next/image";
-
 export function Logo() {
   return (
-    <div className="relative h-8 max-w-[10.847rem]">
-      <Image
-        src={logo}
-        fill
-        className="dark:hidden"
-        alt="NextAdmin logo"
-        role="presentation"
-        quality={100}
-      />
-
-      <Image
-        src={darkLogo}
-        fill
-        className="hidden dark:block"
-        alt="NextAdmin logo"
-        role="presentation"
-        quality={100}
-      />
+    <div className="flex items-center space-x-1">
+      <div className="text-lg font-bold tracking-wider text-indigo-600 dark:text-indigo-400">
+        CAPRICORN
+      </div>
+      <div className="text-base font-medium text-gray-500 dark:text-gray-300">
+        CREDIT
+      </div>
     </div>
   );
 }

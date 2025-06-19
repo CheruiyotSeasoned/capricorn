@@ -14,12 +14,12 @@ export const NAV_DATA = [
           },
         ],
       },
-      // {
-      //   title: "Calendar",
-      //   url: "/calendar",
-      //   icon: Icons.Calendar,
-      //   items: [],
-      // },
+      {
+        title: "Laon Estimation",
+        url: "/estimates",
+        icon: Icons.LoanEstimateIcon,
+        items: [],
+      },
       {
         title: "Profile",
         url: "/profile",
@@ -99,6 +99,17 @@ export const NAV_DATA = [
             url: "/auth/sign-in",
           },
         ],
+      },
+      
+    ],
+  },
+    {
+    label: "VERSION",
+    items: [
+      {
+        title: "v1.0.0",
+        icon: Icons.HomeIcon, // You can choose any small neutral icon (ex: info, tag, code)
+        items: [],
       },
     ],
   },

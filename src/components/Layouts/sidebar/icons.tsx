@@ -62,6 +62,24 @@ export function Calendar(props: PropsType) {
     </svg>
   );
 }
+export function LoanEstimateIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      {...props}
+    >
+      <path
+        d="M12 2C10.343 2 9 3.343 9 5v1H8a1 1 0 000 2h8a1 1 0 100-2h-1V5c0-1.657-1.343-3-3-3zM5 10c-.552 0-1 .448-1 1v7c0 2.21 1.79 4 4 4h8c2.21 0 4-1.79 4-4v-7c0-.552-.448-1-1-1H5zm7 2a1 1 0 011 1v.382a2.5 2.5 0 11-2 0V13a1 1 0 011-1z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 
 export function User(props: PropsType) {
   return (

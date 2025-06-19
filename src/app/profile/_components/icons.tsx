@@ -85,6 +85,22 @@ export function LinkedInIcon(props: PropsType) {
     </svg>
   );
 }
+// ...other icon exports
+
+// Example Wallet icon (add this if it doesn't exist)
+export function Wallet(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M2 7V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2" />
+      <circle cx="17" cy="14" r="1.5" />
+    </svg>
+  );
+}
 
 export function DribbleIcon(props: PropsType) {
   return (

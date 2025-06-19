@@ -5,6 +5,9 @@ import { compactFormat } from "@/lib/format-number";
 import { getLoanOverviewData } from "../../fetch";
 import { OverviewCard } from "./card";
 import * as icons from "./icons";
+import { DepositInstructionsModal } from "@/components/DepositInstructionsModal";
+import { Wallet } from "@/app/profile/_components/icons";
+import { OverviewCardsSkeleton } from "./skeleton";
 import { LoanApplyModal } from "@/components/LoanApplyModal";
 
 type LoanOverview = {
@@ -20,28 +23,63 @@ type LoanOverview = {
   };
 };
 
+type UserProfile = {
+  fullName: string;
+  phoneNumber: string;
+  profilePhoto: string;
+  coverPhoto: string;
+};
+
 export function OverviewCardsGroup() {
-  const [data, setData] = useState<LoanOverview | null>(null);
+  const [loanData, setLoanData] = useState<LoanOverview | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
-  const token = localStorage.getItem("token");
-  console.log("Token:", token);
+    const token = localStorage.getItem("token");
 
-  if (!token) {
-    // Redirect to login if no token
-    window.location.href = "/auth/sign-in";
-    return; // Prevent further execution
-  }
+    if (!token) {
+      // Redirect to login if no token
+      window.location.href = "/auth/sign-in";
+      return;
+    }
 
-  // Fetch loan overview
-  getLoanOverviewData(token)
-    .then((res) => setData(res.data))
-    .catch((err) => console.error(err));
+    // Fetch loan overview
+    getLoanOverviewData(token)
+      .then((res) => setLoanData(res.data))
+      .catch((err) => console.error("Loan overview error:", err));
 
-}, []);
+    // Fetch user profile
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch("/api/profile/details", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
+        const result = await res.json();
+        console.log("Profile GET result:", result);
 
-  if (!data) return <div>Loading...</div>;
+        if (result.success && result.data) {
+          setProfile({
+            fullName: result.data.fullName,
+            phoneNumber: result.data.phoneNumber,
+            profilePhoto:
+              result.data.profilePhotoUrl || "/images/user/default-user.png",
+            coverPhoto:
+              result.data.coverPhotoUrl || "/images/cover/default-cover.png",
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  if (!loanData || !profile) return <div>Loading...</div>;
 
   const {
     totalLoanAmount,
@@ -49,57 +87,152 @@ export function OverviewCardsGroup() {
     totalPaid,
     nextDueDate,
     latestLoan,
-  } = data;
+  } = loanData;
 
   const remainingQualified =
     latestLoan.qualifiedAmount - latestLoan.appliedAmount;
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-      {/* Qualified Loan Amount */}
-      <OverviewCard
-        label="Qualified Loan Amount"
-        data={{
-          value: "Ksh " + compactFormat(latestLoan.qualifiedAmount),
-          growthRate: 0,
-        }}
-        Icon={icons.Profit}
-        className="col-span-2 bg-primary/20 text-primary dark:bg-primary/10 dark:text-primary"
-        action={<LoanApplyModal />}
-      />
+<div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+  {/* User Profile Card */}
+  
+ <div className="sm:col-span-2 rounded-lg border bg-white p-4 shadow-sm dark:bg-gray-900">
+
+  {/* Fancy Text Logo + Info */}
+  <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
+    <div>
+      <h1 className="text-2xl font-extrabold text-indigo-700 dark:text-indigo-400 tracking-wide">
+        CAPRICORN CREDIT
+      </h1>
+      <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">
+        Licensed lender · Fast, affordable credit
+      </p>
+    </div>
+    <div className="mt-2 sm:mt-0 text-xs text-gray-400 dark:text-gray-500">
+      Member No. 987654321
+    </div>
+  </div>
+
+  {/* Cover Photo */}
+  <div
+    className="h-24 w-full rounded-lg bg-cover bg-center"
+    style={{
+      backgroundImage: `url(${profile.coverPhoto || '/images/cover/default-cover.png'})`,
+    }}
+  ></div>
+
+  {/* Profile Section */}
+  <div className="flex flex-col sm:flex-row items-center sm:items-start -mt-12 space-y-4 sm:space-y-0 sm:space-x-4 px-4">
+    <img
+      src={profile.profilePhoto || '/images/user/user-15.png'}
+      alt="Profile"
+      className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-md"
+    />
+    <div className="flex-1 text-center sm:text-left">
+      <h3 className="text-xl font-bold text-gray-900 dark:text-white">{profile.fullName}</h3>
+      <p className="text-sm text-gray-500 mb-2">{profile.phoneNumber}</p>
+
+      {/* Approved Loan Amount */}
+      <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg shadow-sm">
+        <p className="text-sm text-green-700 mb-1 flex items-center">
+          <svg
+            className="h-4 w-4 mr-1 text-green-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8.364 8.364a1 1 0 01-1.414 0L3.293 11.414a1 1 0 011.414-1.414l3.95 3.95 7.657-7.657a1 1 0 011.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+          Approved Loan Amount
+        </p>
+        <p className="text-2xl font-bold text-green-800">
+          Ksh {(latestLoan?.qualifiedAmount || 0).toLocaleString("en-KE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </p>
+      </div>
+
+      {/* Dummy Bank Account */}
+      <div className="mt-4 p-3 bg-gray-50 border rounded shadow-sm">
+        <p className="text-sm text-gray-400 mb-1">Security Deposit Account</p>
+        <p className="text-md font-semibold text-gray-700">
+          123-456-7890 (ABC Bank)
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+      {/* Qualified Loan Amount Card */}
+{/* Qualified Loan Amount Card */}
+<OverviewCard
+  label="Security Deposit Amount"
+  data={{
+    value:
+      "Ksh " +
+      (latestLoan.appliedAmount * 0.12).toLocaleString("en-KE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    growthRate: 0,
+  }}
+  Icon={icons.Product}
+  className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+  action={
+  <div className="flex flex-col space-y-2">
+    {/* Apply Now button */}
+    <LoanApplyModal />
+
+    {/* Show Deposit button only if appliedAmount > 0 and status is pending */}
+    {latestLoan.appliedAmount > 0 && latestLoan.status === "pending" && (
+      <DepositInstructionsModal amount={latestLoan.appliedAmount * 0.12} />
+    )}
+  </div>
+}
+
+/>
+
 
       {/* Applied Amount */}
       <OverviewCard
         label="Applied Amount"
         data={{
-          value: "Ksh " + compactFormat(latestLoan.appliedAmount),
+          value: "Ksh " + (latestLoan.appliedAmount).toLocaleString("en-KE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
           growthRate: 0,
         }}
         Icon={icons.Profit} // or another valid icon
       />
 
       {/* Remaining Qualified */}
-      <OverviewCard
+      {/* <OverviewCard
         label="Remaining Qualified"
         data={{
           value: "Ksh " + compactFormat(remainingQualified),
           growthRate: 0,
         }}
         Icon={icons.Product}
-      />
+      /> */}
 
       {/* Application Status */}
-      <OverviewCard
+      {/* <OverviewCard
         label="Application Status"
         data={{
           value: latestLoan.status.charAt(0).toUpperCase() + latestLoan.status.slice(1),
           growthRate: 0,
         }}
         Icon={ icons.Approved}
-      />
+      /> */}
 
       {/* Allocated or Rejected Amount */}
-      {latestLoan.status !== "pending" && (
+      {/* {latestLoan.status !== "pending" && (
         <OverviewCard
           label={
             latestLoan.status === "approved"
@@ -119,7 +252,7 @@ export function OverviewCardsGroup() {
           Icon={ icons.Approved}
           className="sm:col-span-2"
         />
-      )}
+      )} */}
     </div>
   );
 }
