@@ -35,5 +35,6 @@ jobs:
             git pull origin master
             npm install
             npx prisma db push --accept-data-loss
+            prisma generate
             npm run build
-            pm2 restart nextjs-app
+            PORT=3001 pm2 restart npm --name "app" -- restart
