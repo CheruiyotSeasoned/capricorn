@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  fullName         String
+  nationalId       String    @unique
+  phoneNumber      String
+  addressCounty    String
+  addressTown      String
+  emergencyName    String
+  emergencyPhone   String
+  profilePhotoUrl  String?  // for profile image
+  coverPhotoUrl    String?  // for cover image
+  passwordHash     String
+  createdAt        DateTime  @default(now())
+  loans            Loan[]
+  notifications Notification[]
+    paymentSchedules PaymentSchedule[]
+}
+
+model Loan {
+  id                  Int       @id @default(autoincrement())
+  userId              Int
+  user                User      @relation(fields: [userId], references: [id])
+  appliedAmount       Float
+  qualifiedAmount     Float
+  securityPercentage  Float     @default(12.0)
+  securityAmount      Float
+  repaymentPeriod     String
+  status              String    @default("pending")
+  createdAt           DateTime  @default(now())
+    paymentSchedules    PaymentSchedule[]
+}
+model Notification {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  title       String
+  subTitle    String
+  imageUrl    String?
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Payment {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  amount   Decimal
+  dueDate  DateTime
+  createdAt   DateTime @default(now())
+  status   String  // e.g. "PAID", "PENDING"
+}
+model PaymentSchedule {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  loanId   Int
+  dueDate  DateTime
+  amount   Decimal
+  status   String   // "PENDING", "PAID", etc.
+  createdAt DateTime @default(now())
+
+  user   User  @relation(fields: [userId], references: [id])
+  loan   Loan  @relation(fields: [loanId], references: [id])
+}
+
+
