@@ -17,6 +17,7 @@ type InputGroupProps = {
   iconPosition?: "left" | "right";
   height?: "sm" | "default";
   defaultValue?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // <== FIXED this line
 };
 
 const InputGroup: React.FC<InputGroupProps> = ({
@@ -27,7 +28,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
   required,
   disabled,
   active,
-  handleChange,
+  onChange, // <== FIXED this line
   icon,
   ...props
 }) => {
@@ -56,7 +57,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
           type={type}
           name={props.name}
           placeholder={placeholder}
-          onChange={handleChange}
+          onChange={onChange} // <== FIXED this line
           value={props.value}
           defaultValue={props.defaultValue}
           className={cn(
@@ -77,6 +78,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
     </div>
   );
 };
+
 
 export default InputGroup;
 

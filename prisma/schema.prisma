@@ -15,6 +15,7 @@ model User {
   addressCounty    String
   addressTown      String
   emergencyName    String
+  email String? @unique
   emergencyPhone   String
   profilePhotoUrl  String?  // for profile image
   coverPhotoUrl    String?  // for cover image
