@@ -52,7 +52,7 @@ export default function RegisterWithPassword() {
 
     if (res.ok) {
       alert("Registered successfully!");
-      router.push("auth/sign-in");
+      router.push("/sign-in");
     } else {
       alert("Registration failed");
     }
