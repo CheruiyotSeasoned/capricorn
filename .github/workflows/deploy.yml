@@ -20,15 +20,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # - name: Prisma DB Push
-      #   run: npx prisma db push --accept-data-loss
-
-      # - name: Prisma Generate
-      #   run: npx prisma generate
-
-      # - name: Build Next.js app
-      #   run: npm run build
-
       - name: Deploy to GCP VM
         uses: appleboy/ssh-action@v0.1.6
         with:
