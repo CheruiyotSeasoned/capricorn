@@ -65,6 +65,7 @@ export default function RegisterWithPassword() {
         label="Full Name"
         placeholder="John Doe"
         name="fullName"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.fullName}
       />
@@ -74,6 +75,7 @@ export default function RegisterWithPassword() {
         label="National ID"
         placeholder="12345678"
         name="nationalId"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.nationalId}
       />
@@ -83,6 +85,7 @@ export default function RegisterWithPassword() {
         label="Mpesa Phone Number"
         placeholder="0712345678"
         name="phoneNumber"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.phoneNumber}
       />
@@ -93,6 +96,7 @@ export default function RegisterWithPassword() {
           label="County"
           placeholder="Nairobi"
           name="addressCounty"
+          onChange={handleChange}
           handleChange={handleChange}
           value={form.addressCounty}
         />
@@ -102,6 +106,7 @@ export default function RegisterWithPassword() {
           label="Town"
           placeholder="Westlands"
           name="addressTown"
+          onChange={handleChange}
           handleChange={handleChange}
           value={form.addressTown}
         />
@@ -112,6 +117,7 @@ export default function RegisterWithPassword() {
         label="Loan Amount to Apply"
         placeholder="25000"
         name="loanAmount"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.loanAmount}
       />
@@ -121,6 +127,7 @@ export default function RegisterWithPassword() {
         label="Emergency Contact Name"
         placeholder="Jane Doe"
         name="emergencyName"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.emergencyName}
       />
@@ -130,6 +137,7 @@ export default function RegisterWithPassword() {
         label="Emergency Contact Phone"
         placeholder="0798765432"
         name="emergencyPhone"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.emergencyPhone}
       />
@@ -139,6 +147,7 @@ export default function RegisterWithPassword() {
         label="Email"
         placeholder="Enter your email"
         name="email"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.email}
         icon={<EmailIcon />}
@@ -149,6 +158,7 @@ export default function RegisterWithPassword() {
         label="Password"
         placeholder="Create a password"
         name="password"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.password}
         icon={<PasswordIcon />}
@@ -159,6 +169,7 @@ export default function RegisterWithPassword() {
         label="Confirm Password"
         placeholder="Confirm your password"
         name="confirmPassword"
+        onChange={handleChange}
         handleChange={handleChange}
         value={form.confirmPassword}
         icon={<PasswordIcon />}
