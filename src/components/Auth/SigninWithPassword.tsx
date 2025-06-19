@@ -60,6 +60,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         className="mb-4 [&_input]:py-[15px]"
         placeholder="Enter your national ID"
         name="nationalId"
+        onChange={handleChange}
         handleChange={handleChange}
         value={data.nationalId}  // ✅ correct binding
         icon={<EmailIcon />}
@@ -72,6 +73,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         className="mb-5 [&_input]:py-[15px]"
         placeholder="Enter your password"
         name="password"
+        onChange={handleChange}
         handleChange={handleChange}
         value={data.password}
         icon={<PasswordIcon />}
