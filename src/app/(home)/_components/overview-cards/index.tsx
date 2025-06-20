@@ -157,7 +157,7 @@ export function OverviewCardsGroup() {
       <div className="mt-4 p-3 bg-gray-50 border rounded shadow-sm">
         <p className="text-sm text-gray-400 mb-1">Security Deposit Account</p>
         <p className="text-md font-semibold text-gray-700">
-          123-456-7890 (ABC Bank)
+          12345
         </p>
       </div>
 
