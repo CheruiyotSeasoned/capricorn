@@ -105,11 +105,8 @@ export function OverviewCardsGroup() {
         CAPRICORN CREDIT
       </h1>
       <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">
-        Licensed lender · Fast, affordable credit
+        Fast, affordable credit
       </p>
-    </div>
-    <div className="mt-2 sm:mt-0 text-xs text-gray-400 dark:text-gray-500">
-      Member No. 987654321
     </div>
   </div>
 
