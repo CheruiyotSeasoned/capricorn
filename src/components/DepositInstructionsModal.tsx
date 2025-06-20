@@ -62,7 +62,7 @@ export function DepositInstructionsModal({ amount }: { amount: number }) {
       {/* Instruction text */}
       <p className="text-sm text-gray-600 dark:text-gray-400">
         1. Open your M-Pesa app.<br/>
-        2. Go to "Lipa na M-Pesa".<br/> 
+        2. Go to &quot;Lipa na M-Pesa&quot;.<br/>
         3. then select Paybill.<br/>
         Enter the business number and account number below, then enter the amount to deposit.
       </p>
