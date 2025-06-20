@@ -34,4 +34,9 @@ jobs:
             npx prisma db push --accept-data-loss
             npx prisma generate
             npm run build
-            PORT=3001 pm2 restart app
+            
+            # Stop old PM2 process (if exists)
+            pm2 delete app || true
+            
+            # Start new PM2 process
+            PORT=3001 pm2 start "npm run start" --name app --update-env
