@@ -5,6 +5,7 @@ import { compactFormat } from "@/lib/format-number";
 import { getLoanOverviewData } from "../../fetch";
 import { OverviewCard } from "./card";
 import * as icons from "./icons";
+import Image from "next/image";
 import { DepositInstructionsModal } from "@/components/DepositInstructionsModal";
 import { Wallet } from "@/app/profile/_components/icons";
 import { OverviewCardsSkeleton } from "./skeleton";
@@ -77,7 +78,7 @@ export function OverviewCardsGroup() {
     };
 
     fetchProfile();
-  }, []);
+  }, [setLoanData, setProfile]);
 
   if (!loanData || !profile) return <div>Loading...</div>;
 
@@ -120,11 +121,13 @@ export function OverviewCardsGroup() {
 
   {/* Profile Section */}
   <div className="flex flex-col sm:flex-row items-center sm:items-start -mt-12 space-y-4 sm:space-y-0 sm:space-x-4 px-4">
-    <img
-      src={profile.profilePhoto || '/images/user/user-15.png'}
-      alt="Profile"
-      className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-md"
-    />
+    <Image
+  src={profile.profilePhoto || '/images/user/user-15.png'}
+  alt="Profile"
+  width={96}
+  height={96}
+  className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-md"
+/>
     <div className="flex-1 text-center sm:text-left">
       <h3 className="text-xl font-bold text-gray-900 dark:text-white">{profile.fullName}</h3>
       <p className="text-sm text-gray-500 mb-2">{profile.phoneNumber}</p>
@@ -186,9 +189,10 @@ export function OverviewCardsGroup() {
     <LoanApplyModal />
 
     {/* Show Deposit button only if appliedAmount > 0 and status is pending */}
-    {latestLoan.appliedAmount > 0 && latestLoan.status === "pending" && (
-      <DepositInstructionsModal amount={latestLoan.appliedAmount * 0.12} />
-    )}
+    {latestLoan?.appliedAmount > 0 && latestLoan?.status === "pending" && (
+  <DepositInstructionsModal amount={latestLoan.appliedAmount * 0.12} />
+  )}
+
   </div>
 }
 
