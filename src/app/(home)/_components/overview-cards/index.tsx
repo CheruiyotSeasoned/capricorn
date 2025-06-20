@@ -155,7 +155,7 @@ export function OverviewCardsGroup() {
 
       {/* Dummy Bank Account */}
       <div className="mt-4 p-3 bg-gray-50 border rounded shadow-sm">
-        <p className="text-sm text-gray-400 mb-1">Your Account</p>
+        <p className="text-sm text-gray-400 mb-1">Your Account Number</p>
         <p className="text-md font-semibold text-gray-700">
           12345
         </p>
