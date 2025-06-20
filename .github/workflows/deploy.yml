@@ -40,3 +40,5 @@ jobs:
             
             # Start new PM2 process
             PORT=3001 pm2 start "npm run start" --name app --update-env
+      - name: Notify deployment success
+        run: echo "Deployment to GCP VM successful!"
