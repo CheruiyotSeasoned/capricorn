@@ -10,6 +10,7 @@ import { DepositInstructionsModal } from "@/components/DepositInstructionsModal"
 import { Wallet } from "@/app/profile/_components/icons";
 import { OverviewCardsSkeleton } from "./skeleton";
 import { LoanApplyModal } from "@/components/LoanApplyModal";
+import { LoanProgressPanel } from "@/components/LoanProgressPanel";
 
 type LoanOverview = {
   totalLoanAmount: { value: number };
@@ -131,7 +132,13 @@ export function OverviewCardsGroup() {
     <div className="flex-1 text-center sm:text-left">
       <h3 className="text-xl font-bold text-gray-900 dark:text-white">{profile.fullName}</h3>
       <p className="text-sm text-gray-500 mb-2">{profile.phoneNumber}</p>
+</div>
+<LoanProgressPanel
+  status={latestLoan.status}
+  appliedAmount={latestLoan.appliedAmount}
+/>
 
+    <div className="flex-1 text-center sm:text-left">
       {/* Approved Loan Amount */}
       <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg shadow-sm">
         <p className="text-sm text-green-700 mb-1 flex items-center">

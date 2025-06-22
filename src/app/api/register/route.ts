@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       addressTown,
       emergencyName,
       emergencyPhone,
+      email,
       password,
     } = body;
 
@@ -27,6 +28,7 @@ export async function POST(req: Request) {
       !addressCounty ||
       !addressTown ||
       !emergencyName ||
+      !email ||
       !emergencyPhone ||
       !password
     ) {
@@ -61,6 +63,7 @@ export async function POST(req: Request) {
         addressTown,
         emergencyName,
         emergencyPhone,
+        email,
         passwordHash,
       },
     });

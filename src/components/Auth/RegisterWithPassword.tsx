@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function RegisterWithPassword() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function RegisterWithPassword() {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
 
@@ -51,10 +52,13 @@ export default function RegisterWithPassword() {
     setLoading(false);
 
     if (res.ok) {
-      alert("Registered successfully!");
-      router.push("/sign-in");
+      toast.success("Registered successfully! Redirecting...");
+      setTimeout(() => {
+        router.push("/auth/sign-in");
+      }, 1500); // give user time to see toast
     } else {
-      alert("Registration failed");
+      const result = await res.json();
+      toast.error(result.error || "Registration failed");
     }
   };
 
@@ -112,7 +116,7 @@ export default function RegisterWithPassword() {
         />
       </div>
 
-      <InputGroup
+      {/* <InputGroup
         type="number"
         label="Loan Amount to Apply"
         placeholder="25000"
@@ -120,7 +124,7 @@ export default function RegisterWithPassword() {
         onChange={handleChange}
         handleChange={handleChange}
         value={form.loanAmount}
-      />
+      /> */}
 
       <InputGroup
         type="text"

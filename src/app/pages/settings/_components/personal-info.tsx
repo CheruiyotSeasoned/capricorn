@@ -8,6 +8,7 @@ import {
 import InputGroup from "@/components/FormElements/InputGroup";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type ProfileData = {
   fullName: string;
@@ -83,13 +84,13 @@ export function PersonalInfoForm() {
         console.log("Update result:", result);
 
         if (result.success) {
-          alert("Profile updated successfully");
+          toast.success("Profile updated successfully");
         } else {
-          alert("Failed to update profile");
+          toast.error("Failed to update profile");
         }
       } catch (err) {
         console.error("Update error:", err);
-        alert("An error occurred");
+        toast.error("An error occurred");
       }
     }}
   >

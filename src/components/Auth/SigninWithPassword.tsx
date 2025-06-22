@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { Checkbox } from "../FormElements/checkbox";
+import toast from "react-hot-toast";
 
 export default function SigninWithPassword() {
   const [data, setData] = useState({
@@ -47,7 +48,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // Redirect to dashboard or home
     window.location.href = "/";
   } else {
-    alert("Login failed! Please check your credentials.");
+    toast.error("Login failed! Please check your credentials.");
   }
 };
 

@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         securityPercentage: SECURITY_PERCENTAGE,
         securityAmount,
         repaymentPeriod: "30 days", // adjust default or accept from client
-        status: "pending",
+        status: "approved",
       },
     });
 

@@ -20,6 +20,8 @@ model User {
   profilePhotoUrl  String?  // for profile image
   coverPhotoUrl    String?  // for cover image
   passwordHash     String
+  resetToken       String? 
+  resetTokenExpiry DateTime? 
   createdAt        DateTime  @default(now())
   loans            Loan[]
   notifications Notification[]

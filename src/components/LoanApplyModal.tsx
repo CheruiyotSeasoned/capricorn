@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export function LoanApplyModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,7 @@ export function LoanApplyModal() {
 
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
-    if (!token) return alert("Please log in first");
+    if (!token) return toast.error("Please log in first");
 
     const res = await fetch("/api/loans/apply", {
       method: "POST",
@@ -25,10 +26,10 @@ export function LoanApplyModal() {
     });
     const json = await res.json();
     if (json.success) {
-      alert("Loan applied!");
+      toast.success("Loan applied!");
       setIsOpen(false);
     } else {
-      alert("Error: " + json.error);
+      toast.error("Error: " + json.error);
     }
   };
 
