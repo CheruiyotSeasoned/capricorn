@@ -16,7 +16,6 @@ export default function RegisterWithPassword() {
     phoneNumber: "",
     addressCounty: "",
     addressTown: "",
-    loanAmount: "",
     emergencyName: "",
     emergencyPhone: "",
     email: "",
@@ -25,6 +24,8 @@ export default function RegisterWithPassword() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
@@ -55,7 +56,7 @@ export default function RegisterWithPassword() {
       toast.success("Registered successfully! Redirecting...");
       setTimeout(() => {
         router.push("/auth/sign-in");
-      }, 1500); // give user time to see toast
+      }, 1500);
     } else {
       const result = await res.json();
       toast.error(result.error || "Registration failed");
@@ -70,7 +71,6 @@ export default function RegisterWithPassword() {
         placeholder="John Doe"
         name="fullName"
         onChange={handleChange}
-        handleChange={handleChange}
         value={form.fullName}
       />
 
@@ -80,7 +80,6 @@ export default function RegisterWithPassword() {
         placeholder="12345678"
         name="nationalId"
         onChange={handleChange}
-        handleChange={handleChange}
         value={form.nationalId}
       />
 
@@ -90,7 +89,6 @@ export default function RegisterWithPassword() {
         placeholder="0712345678"
         name="phoneNumber"
         onChange={handleChange}
-        handleChange={handleChange}
         value={form.phoneNumber}
       />
 
@@ -101,7 +99,6 @@ export default function RegisterWithPassword() {
           placeholder="Nairobi"
           name="addressCounty"
           onChange={handleChange}
-          handleChange={handleChange}
           value={form.addressCounty}
         />
 
@@ -111,20 +108,9 @@ export default function RegisterWithPassword() {
           placeholder="Westlands"
           name="addressTown"
           onChange={handleChange}
-          handleChange={handleChange}
           value={form.addressTown}
         />
       </div>
-
-      {/* <InputGroup
-        type="number"
-        label="Loan Amount to Apply"
-        placeholder="25000"
-        name="loanAmount"
-        onChange={handleChange}
-        handleChange={handleChange}
-        value={form.loanAmount}
-      /> */}
 
       <InputGroup
         type="text"
@@ -132,7 +118,6 @@ export default function RegisterWithPassword() {
         placeholder="Jane Doe"
         name="emergencyName"
         onChange={handleChange}
-        handleChange={handleChange}
         value={form.emergencyName}
       />
 
@@ -142,7 +127,6 @@ export default function RegisterWithPassword() {
         placeholder="0798765432"
         name="emergencyPhone"
         onChange={handleChange}
-        handleChange={handleChange}
         value={form.emergencyPhone}
       />
 
@@ -152,32 +136,50 @@ export default function RegisterWithPassword() {
         placeholder="Enter your email"
         name="email"
         onChange={handleChange}
-        handleChange={handleChange}
         value={form.email}
         icon={<EmailIcon />}
       />
 
-      <InputGroup
-        type="password"
-        label="Password"
-        placeholder="Create a password"
-        name="password"
-        onChange={handleChange}
-        handleChange={handleChange}
-        value={form.password}
-        icon={<PasswordIcon />}
-      />
+      <div>
+        <InputGroup
+          type={showPassword ? "text" : "password"}
+          label="Password"
+          placeholder="Create a password"
+          name="password"
+          onChange={handleChange}
+          value={form.password}
+          icon={<PasswordIcon />}
+        />
+        <div className="text-sm text-gray-500 mt-1">
+          Password must be at least 8 characters, include a number and a capital letter.
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="text-sm text-primary mt-1"
+        >
+          {showPassword ? "Hide Password" : "Show Password"}
+        </button>
+      </div>
 
-      <InputGroup
-        type="password"
-        label="Confirm Password"
-        placeholder="Confirm your password"
-        name="confirmPassword"
-        onChange={handleChange}
-        handleChange={handleChange}
-        value={form.confirmPassword}
-        icon={<PasswordIcon />}
-      />
+      <div>
+        <InputGroup
+          type={showConfirmPassword ? "text" : "password"}
+          label="Confirm Password"
+          placeholder="Confirm your password"
+          name="confirmPassword"
+          onChange={handleChange}
+          value={form.confirmPassword}
+          icon={<PasswordIcon />}
+        />
+        <button
+          type="button"
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          className="text-sm text-primary mt-1"
+        >
+          {showConfirmPassword ? "Hide Password" : "Show Password"}
+        </button>
+      </div>
 
       <button
         type="submit"
@@ -192,7 +194,6 @@ export default function RegisterWithPassword() {
           "Register"
         )}
       </button>
-
     </form>
   );
 }

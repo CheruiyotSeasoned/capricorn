@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export function LoanApplyModal({ onSuccess }: { onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [applied, setApplied] = useState<number>(0);
+  const router = useRouter();
 
   // business logic
   const bonus = 1250;
@@ -24,13 +26,25 @@ export function LoanApplyModal({ onSuccess }: { onSuccess?: () => void }) {
       },
       body: JSON.stringify({ appliedAmount: applied }),
     });
+
     const json = await res.json();
-    if (json.success) {
-      toast.success("Loan applied!");
-      setIsOpen(false);
-    } else {
-      toast.error("Error: " + json.error);
-    }
+
+if (json.success) {
+  toast.success("Loan applied!");
+
+  if (onSuccess) {
+    onSuccess();
+  }
+
+  setTimeout(() => {
+    router.push("/"); // or window.location.href = "/";
+    setIsOpen(false); // close after navigating
+  }, 1500); // give toast time (1500ms better than 1000ms)
+} else {
+  toast.error("Error: " + json.error);
+}
+    setApplied(0); // reset applied amount
+    setIsOpen(false); // close modal
   };
 
   return (
@@ -49,7 +63,7 @@ export function LoanApplyModal({ onSuccess }: { onSuccess?: () => void }) {
         >
           <div
             className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-lg font-semibold mb-4">Apply for a Loan</h2>
 
@@ -61,7 +75,7 @@ export function LoanApplyModal({ onSuccess }: { onSuccess?: () => void }) {
                 type="number"
                 min={1}
                 value={applied || ""}
-                onChange={e => setApplied(Number(e.target.value))}
+                onChange={(e) => setApplied(Number(e.target.value))}
                 className="mt-1 w-full rounded border px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                 placeholder="e.g. 25000"
               />

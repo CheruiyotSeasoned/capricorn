@@ -1,4 +1,5 @@
 "use client";
+
 import { EmailIcon, PasswordIcon } from "@/assets/icons";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -14,44 +15,44 @@ export default function SigninWithPassword() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({
       ...data,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
     });
   };
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  setLoading(true);
+    setLoading(true);
 
-  const res = await fetch("/api/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      nationalId: data.nationalId,
-      password: data.password,
-    }),
-  });
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nationalId: data.nationalId,
+        password: data.password,
+      }),
+    });
 
-  setLoading(false);
+    setLoading(false);
 
-  if (res.ok) {
-    // Optional: Save token, or redirect user
-    const result = await res.json();
-    // localStorage.setItem("token", result.token);
-    // Save token to localStorage
-    localStorage.setItem("token", result.token);
-    document.cookie = `token=${result.token}; path=/;`;
-    // Redirect to dashboard or home
-    window.location.href = "/";
-  } else {
-    toast.error("Login failed! Please check your credentials.");
-  }
-};
+    if (res.ok) {
+      const result = await res.json();
 
+      // Save token
+      localStorage.setItem("token", result.token);
+      document.cookie = `token=${result.token}; path=/;`;
+
+      // Redirect
+      window.location.href = "/";
+    } else {
+      toast.error("Login failed! Please check your credentials.");
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -62,23 +63,30 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         placeholder="Enter your national ID"
         name="nationalId"
         onChange={handleChange}
-        handleChange={handleChange}
-        value={data.nationalId}  // ✅ correct binding
+        value={data.nationalId}
         icon={<EmailIcon />}
       />
 
+      <div className="mb-5">
+        <InputGroup
+          type={showPassword ? "text" : "password"}
+          label="Password"
+          className="[&_input]:py-[15px]"
+          placeholder="Enter your password"
+          name="password"
+          onChange={handleChange}
+          value={data.password}
+          icon={<PasswordIcon />}
+        />
 
-      <InputGroup
-        type="password"
-        label="Password"
-        className="mb-5 [&_input]:py-[15px]"
-        placeholder="Enter your password"
-        name="password"
-        onChange={handleChange}
-        handleChange={handleChange}
-        value={data.password}
-        icon={<PasswordIcon />}
-      />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="text-sm text-primary mt-1"
+        >
+          {showPassword ? "Hide Password" : "Show Password"}
+        </button>
+      </div>
 
       <div className="mb-6 flex items-center justify-between gap-2 py-2 font-medium">
         <Checkbox
@@ -87,12 +95,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           withIcon="check"
           minimal
           radius="md"
-          onChange={(e) =>
-            setData({
-              ...data,
-              remember: e.target.checked,
-            })
-          }
+          onChange={handleChange}
+          checked={data.remember}
         />
 
         <Link

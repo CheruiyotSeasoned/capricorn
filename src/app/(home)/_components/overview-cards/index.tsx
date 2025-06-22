@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { compactFormat } from "@/lib/format-number";
 import { getLoanOverviewData } from "../../fetch";
 import { OverviewCard } from "./card";
 import * as icons from "./icons";
@@ -10,17 +9,11 @@ import { DepositInstructionsModal } from "@/components/DepositInstructionsModal"
 import { LoanApplyModal } from "@/components/LoanApplyModal";
 import { LoanProgressPanel } from "@/components/LoanProgressPanel";
 
-type LoanOverview = {
-  totalLoanAmount: { value: number };
-  outstandingBalance: { value: number };
-  totalPaid: { value: number };
-  nextDueDate: { value: string | null };
-  latestLoan: {
-    appliedAmount: number;
-    qualifiedAmount: number;
-    securityAmount: number;
-    status: "pending" | "approved" | "rejected";
-  };
+type Loan = {
+  appliedAmount: number;
+  qualifiedAmount: number;
+  securityAmount: number;
+  status: "pending" | "approved" | "rejected";
 };
 
 type UserProfile = {
@@ -28,12 +21,11 @@ type UserProfile = {
   phoneNumber: string;
   profilePhoto: string;
   coverPhoto: string;
+  loans: Loan[];
 };
 
 export function OverviewCardsGroup() {
-  const [loanData, setLoanData] = useState<LoanOverview | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-
   const [refreshKey, setRefreshKey] = useState(0);
 
   const refresh = () => {
@@ -48,12 +40,6 @@ export function OverviewCardsGroup() {
       return;
     }
 
-    // Fetch loan overview
-    getLoanOverviewData(token)
-      .then((res) => setLoanData(res.data))
-      .catch((err) => console.error("Loan overview error:", err));
-
-    // Fetch user profile
     const fetchProfile = async () => {
       try {
         const res = await fetch("/api/profile/details", {
@@ -74,6 +60,7 @@ export function OverviewCardsGroup() {
               result.data.profilePhotoUrl || "/images/user/default-user.png",
             coverPhoto:
               result.data.coverPhotoUrl || "/images/cover/default-cover.png",
+            loans: result.data.loans || [],
           });
         }
       } catch (err) {
@@ -84,12 +71,31 @@ export function OverviewCardsGroup() {
     fetchProfile();
   }, [refreshKey]);
 
-  if (!loanData || !profile) return <div>Loading...</div>;
+  if (!profile) return <div>Loading...</div>;
 
-  const { totalLoanAmount, outstandingBalance, totalPaid, nextDueDate, latestLoan } = loanData;
+  // Totals
+  const totalApplied = profile.loans?.reduce(
+    (sum, loan) => sum + loan.appliedAmount,
+    0
+  );
 
-  const remainingQualified =
-    latestLoan.qualifiedAmount - latestLoan.appliedAmount;
+  const totalQualified = profile.loans?.reduce(
+    (sum, loan) => sum + loan.qualifiedAmount,
+    0
+  );
+
+  const totalSecurity = profile.loans?.reduce(
+    (sum, loan) => sum + loan.securityAmount,
+    0
+  );
+
+  // Progress panel: use most recent approved loan (if exists)
+  const latestApprovedLoan = profile.loans?.[0] || {
+    appliedAmount: 0,
+    qualifiedAmount: 0,
+    securityAmount: 0,
+    status: "pending",
+  };
 
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
@@ -130,12 +136,12 @@ export function OverviewCardsGroup() {
           </div>
 
           <LoanProgressPanel
-            status={latestLoan.status}
-            appliedAmount={latestLoan.appliedAmount}
+            status={latestApprovedLoan.status}
+            appliedAmount={latestApprovedLoan.appliedAmount}
           />
 
           <div className="flex-1 text-center sm:text-left">
-            {/* Approved Loan */}
+            {/* Approved Loan Amount */}
             <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg shadow-sm">
               <p className="text-sm text-green-700 mb-1 flex items-center">
                 <svg
@@ -152,7 +158,7 @@ export function OverviewCardsGroup() {
                 Approved Loan Amount
               </p>
               <p className="text-2xl font-bold text-green-800">
-                Ksh {(latestLoan?.qualifiedAmount || 0).toLocaleString("en-KE", {
+                Ksh {totalQualified.toLocaleString("en-KE", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -174,22 +180,20 @@ export function OverviewCardsGroup() {
         data={{
           value:
             "Ksh " +
-            (latestLoan.appliedAmount * 0.12).toLocaleString("en-KE", {
+            totalSecurity.toLocaleString("en-KE", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             }),
           growthRate: 0,
         }}
         Icon={icons.Product}
-        className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
         action={
           <div className="flex flex-col space-y-2">
             <LoanApplyModal onSuccess={refresh} />
-
-            {latestLoan?.appliedAmount > 0 &&
-              latestLoan?.status === "pending" && (
+            {latestApprovedLoan.appliedAmount > 0 &&
+              latestApprovedLoan.status === "pending" && (
                 <DepositInstructionsModal
-                  amount={latestLoan.appliedAmount * 0.12}
+                  amount={latestApprovedLoan.appliedAmount * 0.12}
                   onSuccess={refresh}
                 />
               )}
@@ -203,7 +207,7 @@ export function OverviewCardsGroup() {
         data={{
           value:
             "Ksh " +
-            latestLoan.appliedAmount.toLocaleString("en-KE", {
+            totalApplied.toLocaleString("en-KE", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             }),

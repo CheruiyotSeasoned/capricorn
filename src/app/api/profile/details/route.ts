@@ -46,17 +46,21 @@ const user = await prisma.user.findUnique({
     addressCounty: true,
     email: true,
     loans: {
+      where: {
+        status: "approved",
+      },
       orderBy: { createdAt: "desc" },
-      take: 1,
       select: {
         appliedAmount: true,
         qualifiedAmount: true,
         securityAmount: true,
         status: true,
+        createdAt: true,
       },
     },
   },
 });
+
 
 
 if (!user) return NextResponse.json({ success: false, error: "User not found" }, { status: 404 });
