@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 
-export function DepositInstructionsModal({ amount }: { amount: number }) {
+export function DepositInstructionsModal({ amount, onSuccess }: { amount: number; onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [copiedField, setCopiedField] = useState<"paybill" | "account" | null>(null);
 

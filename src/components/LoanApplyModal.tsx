@@ -3,7 +3,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export function LoanApplyModal() {
+export function LoanApplyModal({ onSuccess }: { onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [applied, setApplied] = useState<number>(0);
 

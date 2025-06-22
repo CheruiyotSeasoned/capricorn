@@ -4,7 +4,7 @@ import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NAV_DATA } from "./data";
 import { ArrowLeftIcon, ChevronUp } from "./icons";
 import { MenuItem } from "./menu-item";
@@ -15,14 +15,11 @@ export function Sidebar() {
   const { setIsOpen, isOpen, isMobile, toggleSidebar } = useSidebarContext();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
-  const toggleExpanded = (title: string) => {
-    setExpandedItems((prev) => (prev.includes(title) ? [] : [title]));
-
-    // Uncomment the following line to enable multiple expanded items
-    // setExpandedItems((prev) =>
-    //   prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
-    // );
-  };
+  const toggleExpanded = useCallback((title: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(title) ? [] : [title]
+    );
+  }, []);
 
   useEffect(() => {
     // Keep collapsible open, when it's subpage is active
@@ -33,14 +30,12 @@ export function Sidebar() {
             if (!expandedItems.includes(item.title)) {
               toggleExpanded(item.title);
             }
-
-            // Break the loop
             return true;
           }
         });
       });
     });
-  }, [pathname, expandedItems, toggleExpanded])
+  }, [pathname, expandedItems, toggleExpanded]);
 
   return (
     <>
@@ -79,7 +74,6 @@ export function Sidebar() {
                 className="absolute left-3/4 right-4.5 top-1/2 -translate-y-1/2 text-right"
               >
                 <span className="sr-only">Close Menu</span>
-
                 <ArrowLeftIcon className="ml-auto size-7" />
               </button>
             )}
@@ -109,9 +103,7 @@ export function Sidebar() {
                                 className="size-6 shrink-0"
                                 aria-hidden="true"
                               />
-
                               <span>{item.title}</span>
-
                               <ChevronUp
                                 className={cn(
                                   "ml-auto rotate-180 transition-transform duration-200",
@@ -160,7 +152,6 @@ export function Sidebar() {
                                   className="size-6 shrink-0"
                                   aria-hidden="true"
                                 />
-
                                 <span>{item.title}</span>
                               </MenuItem>
                             );
