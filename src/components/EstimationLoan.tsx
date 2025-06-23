@@ -65,7 +65,7 @@ export default function EstimateLoan() {
           <span className="text-sm font-semibold text-purple-700">Ksh {fee.toLocaleString()}</span>
         </div>
         <div className="flex justify-between mb-2">
-          <span className="text-sm text-gray-600">Security Deposit (12%)</span>
+          <span className="text-sm text-gray-600">Security Deposit (30%)</span>
           <span className="text-sm font-semibold text-purple-700">Ksh {securityDeposit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
         </div>
         <div className="flex justify-between mb-2">

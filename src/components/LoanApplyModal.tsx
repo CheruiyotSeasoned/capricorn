@@ -89,7 +89,7 @@ if (json.success) {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span>Security Deposit (12%):</span>
+                <span>Security Deposit (30%):</span>
                 <span className="font-medium">
                   Ksh {security.toLocaleString()}
                 </span>
