@@ -33,6 +33,30 @@ export function Profit(props: SVGPropsType) {
     </svg>
   );
 }
+export function BankIcon(props: SVGPropsType) {
+  return (
+    <svg width={58} height={58} viewBox="0 0 58 58" fill="none" {...props}>
+      <circle cx="29" cy="29" r="29" fill="#3B82F6" />
+      <path
+        d="M29 16l-12 6v2h24v-2l-12-6zm-9 10v14h4V26h-4zm6 0v14h6V26h-6zm8 0v14h4V26h-4zM19 42h20v2H19v-2z"
+        fill="#fff"
+      />
+    </svg>
+  );
+}
+export function CashIcon(props: SVGPropsType) {
+  return (
+    <svg width={58} height={58} viewBox="0 0 58 58" fill="none" {...props}>
+      <circle cx="29" cy="29" r="29" fill="#22C55E" />
+      <path
+        d="M18 22h22v14H18V22zm2 2v10h18V24H20zm7 2h4v6h-4v-6z"
+        fill="#fff"
+      />
+    </svg>
+  );
+}
+
+
 
 export function Product(props: SVGPropsType) {
   return (

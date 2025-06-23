@@ -21,7 +21,13 @@ export function OverviewCard({
   Icon,
   className = "",
   action,
-}: PropsType) {
+}: {
+  label: string;
+  data: { value: string; growthRate: number };
+  Icon?: React.ComponentType<any>; // made optional
+  className?: string;
+  action?: React.ReactNode;
+}) {
   const isDecreasing = data.growthRate < 0;
 
   return (
@@ -32,7 +38,7 @@ export function OverviewCard({
       )}
     >
       <div className="flex justify-between items-start">
-        <Icon />
+        {Icon && <Icon />} {/* Only render if Icon is provided */}
         {action && <div>{action}</div>}
       </div>
 
@@ -63,3 +69,4 @@ export function OverviewCard({
     </div>
   );
 }
+

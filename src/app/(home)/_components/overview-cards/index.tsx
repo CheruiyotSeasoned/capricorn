@@ -202,19 +202,43 @@ export function OverviewCardsGroup() {
       />
 
       {/* Applied Amount */}
-      <OverviewCard
-        label="Applied Amount"
-        data={{
-          value:
-            "Ksh " +
-            totalApplied.toLocaleString("en-KE", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            }),
-          growthRate: 0,
-        }}
-        Icon={icons.Profit}
-      />
+{/* Applied Amount */}
+<OverviewCard
+  label="Applied Amount"
+  data={{
+    value:
+      "Ksh " +
+      totalApplied.toLocaleString("en-KE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    growthRate: 0,
+  }}
+  
+  action={
+    <div className="flex space-x-6 items-center mt-4">
+  <div className="h-20 w-36 relative rounded-lg bg-white p-2 shadow-sm transform transition-transform hover:scale-105">
+    <Image
+      src="/images/logo/im-logo.png"
+      alt="I&M Bank"
+      fill
+      className="object-contain"
+    />
+  </div>
+  <div className="h-20 w-36 relative rounded-lg bg-white p-2 shadow-sm transform transition-transform hover:scale-105">
+    <Image
+      src="/images/logo/mpesa-logo.png"
+      alt="M-Pesa"
+      fill
+      className="object-contain"
+    />
+  </div>
+</div>
+
+  }
+/>
+
+
     </div>
   );
 }

@@ -15,7 +15,7 @@ export const NAV_DATA = [
         ],
       },
       {
-        title: "Laon Estimation",
+        title: "Loan Estimation",
         url: "/estimates",
         icon: Icons.LoanEstimateIcon,
         items: [],
