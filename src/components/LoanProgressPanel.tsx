@@ -12,7 +12,7 @@ export function LoanProgressPanel({
   appliedAmount: number;
   onSuccess?: () => void;
 }) {
-  const depositAmount = appliedAmount * 0.12;
+  const depositAmount = appliedAmount * 0.30;
   const [step, setStep] = useState(mapStatusToStep(status));
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -53,7 +53,7 @@ export function LoanProgressPanel({
   };
 
   return (
-    <div className="rounded-lg border bg-white p-5 shadow-md dark:bg-gray-900 mt-6 space-y-4">
+    <div className="flex-1 w-full rounded-lg border bg-white p-5 shadow-md dark:bg-gray-900 mt-6 space-y-4">
       {/* Step Bar */}
       <StepProgressBar currentStep={step} />
 

@@ -10,7 +10,7 @@ export default function EstimateLoan() {
   const [months, setMonths] = useState(6); // default 6 months
 
   const fee = 1250;
-  const securityDeposit = amount * 0.12;
+  const securityDeposit = amount * 0.30;
   const totalPayable = amount + fee + securityDeposit;
   const monthlyInstallment = totalPayable / months;
 

@@ -137,12 +137,12 @@ export function OverviewCardsGroup() {
 
           <LoanProgressPanel
             status={latestApprovedLoan.status}
-            appliedAmount={latestApprovedLoan.appliedAmount}
+            appliedAmount={totalApplied}
           />
 
-          <div className="flex-1 text-center sm:text-left">
+          <div className="flex-1 w-full text-center sm:text-left">
             {/* Approved Loan Amount */}
-            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg shadow-sm">
+          <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg shadow-sm text-center sm:text-left">
               <p className="text-sm text-green-700 mb-1 flex items-center">
                 <svg
                   className="h-4 w-4 mr-1 text-green-500"
@@ -166,7 +166,7 @@ export function OverviewCardsGroup() {
             </div>
 
             {/* Bank Account */}
-            <div className="mt-4 p-3 bg-gray-50 border rounded shadow-sm">
+            <div className="flex-1 w-full mt-4 p-3 bg-gray-50 border rounded shadow-sm">
               <p className="text-sm text-gray-400 mb-1">Your Account Number</p>
               <p className="text-md font-semibold text-gray-700">12345</p>
             </div>
@@ -180,7 +180,7 @@ export function OverviewCardsGroup() {
         data={{
           value:
             "Ksh " +
-            totalSecurity.toLocaleString("en-KE", {
+            (totalApplied * 0.30).toLocaleString("en-KE", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             }),
@@ -190,13 +190,12 @@ export function OverviewCardsGroup() {
         action={
           <div className="flex flex-col space-y-2">
             <LoanApplyModal onSuccess={refresh} />
-            {latestApprovedLoan.appliedAmount > 0 &&
-              latestApprovedLoan.status === "pending" && (
-                <DepositInstructionsModal
-                  amount={latestApprovedLoan.appliedAmount * 0.12}
-                  onSuccess={refresh}
-                />
-              )}
+            {totalApplied > 0 && latestApprovedLoan.status === "pending" && (
+              <DepositInstructionsModal
+                amount={totalApplied * 0.30}
+                onSuccess={refresh}
+              />
+            )}
           </div>
         }
       />

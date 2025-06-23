@@ -12,7 +12,7 @@ export function LoanApplyModal({ onSuccess }: { onSuccess?: () => void }) {
   // business logic
   const bonus = 1250;
   const qualified = applied > 0 ? applied + bonus : 0;
-  const security = qualified * 0.12;
+  const security = qualified * 0.30;
 
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
