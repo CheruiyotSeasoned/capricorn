@@ -214,7 +214,7 @@ export function OverviewCardsGroup() {
       }),
     growthRate: 0,
   }}
-  
+  Icon={icons.Product}
   action={
     <div className="flex space-x-6 items-center mt-4">
   <div className="h-20 w-36 relative rounded-lg bg-white p-2 shadow-sm transform transition-transform hover:scale-105">
